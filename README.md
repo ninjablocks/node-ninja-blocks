@@ -40,7 +40,9 @@ app.devices(function(err, data) { ... })
 // Send `command` to device `guid`
 app.device(guid).actuate(command,function(err) { ... }) 
 
-// Subscribe to a device's data feed. Optionally `overwrite`s an existing callback `url`
+// Subscribe to a device's data feed. Ninja Blocks will POST the requested
+// device's data to the `url` provided here.
+// Optionally `overwrite`s an existing callback `url`
 app.device(guid).subscribe(url,overwrite,function(err) { ... }) 
 
 // Unubscribe from a device's data feed.
