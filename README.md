@@ -41,7 +41,7 @@ app.devices(function(err, data) { ... })
 app.device(guid).actuate(command,function(err) { ... }) 
 
 // Subscribe to a device's data feed. Optionally `overwrite`s an existing callback `url`
-app.device(guid).subscribe('example.com',true,function(err) { ... }) 
+app.device(guid).subscribe(url,overwrite,function(err) { ... }) 
 
 // Unubscribe from a device's data feed.
 app.device(guid).unsubscribe(function(err) { ... }) 
