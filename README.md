@@ -11,7 +11,7 @@ npm install ninja-blocks
 ```javascript
 var ninjaBlocks = require('ninja-blocks');
 // ACCESS_TOKEN acquired via OAuth
-var ninjaApp = ninjaBlocks.app({access_token:ACCESS_TOKEN});
+var ninja = ninjaBlocks.app({access_token:ACCESS_TOKEN});
 
 ninja.devices(function(err,devices) {
   // ...
