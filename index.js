@@ -1,14 +1,19 @@
 var request       = require('request');
 var uri           = 'https://api.ninja.is/rest/v0/';
 
-
+/**
+ * Ninja Blocks Node Library
+ * For interfacing with the Ninja Blocks Platform
+ *
+ * @module
+ */
 exports.app = function(opts) {
   
   var access_token = opts.access_token;
 
   return {
     /**
-     * Fetched all the user's information. If no callback is provided
+     * Fetches all the user's information. If no callback is provided
      * then more specific information can be requested
      *
      * Example:
@@ -40,7 +45,7 @@ exports.app = function(opts) {
 
       return {
         /**
-         * Fetched the user's stream
+         * Fetches the user's stream
          *
          * Example:
          *     app.user().stream(function(err,data){ ... })
