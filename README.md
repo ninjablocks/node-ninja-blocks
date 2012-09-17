@@ -35,7 +35,8 @@ app.user().pusher_channel(function(err,data){ ... })
 ### Device
 ```javascript
 // Fetch a user's devices, a hash map of guid => metadata
-app.devices(function(err, data) { ... })
+app.devices(function(err, data) { ... });
+app.devices('rgbled',function(err,data) { ... });
 
 // Send `command` to device `guid`
 app.device(guid).actuate(command,function(err) { ... }) 
