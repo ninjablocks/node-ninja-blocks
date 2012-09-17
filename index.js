@@ -285,15 +285,22 @@ exports.app = function(opts) {
 
     },
     /**
-     * Fetched all the user's device details
+     * Fetched all the user's device details.
+     * Optionally specify a device type to return
      *
      * Example:
-     *     app.devices(function(err, data) { ... })
+     *     app.devices('rgbled',function(err, data) { ... })
      *
+     * @param {String} type
      * @param {Function} cb
      * @api public
      */
-    devices: function(cb) {
+    devices: function(type,cb) {
+      
+      if (typeof type == "function") {
+        cb = type;
+      };
+
       var opts = {
         url: uri + 'devices',
         method: 'GET',
@@ -303,7 +310,18 @@ exports.app = function(opts) {
       request(opts,function(e,r,b) {
         if (e) cb(e)
           else {
-            if (b.result===1) cb(null, b.data)
+            if (b.result===1) {
+              if (typeof type == "string") {
+                var out = {};
+                for (var guid in b.data) {
+                  if (b.data.hasOwnProperty(guid) && b.data[guid].device_type===type) {
+                    out[guid] = b.data[guid];
+                  }
+                }
+                b.data = out;
+              }
+              cb(null, b.data)
+            }
             else {
               cb({statusCode:b.id||200,error:b.error})
             }
