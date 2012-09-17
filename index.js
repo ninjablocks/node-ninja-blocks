@@ -8,8 +8,13 @@ var uri           = 'https://api.ninja.is/rest/v0/';
  * @module
  */
 exports.app = function(opts) {
-  
-  var access_token = opts.access_token;
+  var qs = {};
+
+  if (opts.access_token) {
+    qs.access_token = opts.access_token;
+  } else if (opts.user_access_token) {
+    qs.user_access_token = opts.user_access_token;
+  }
 
   return {
     /**
@@ -24,11 +29,12 @@ exports.app = function(opts) {
      * @api public
      */
     user: function(cb) {
+
       if (typeof cb === "function") {
         var opts = {
           url: uri + 'user',
           method: 'GET',
-          qs: { access_token:access_token },
+          qs: qs,
           json: true
         };
         request(opts,function(e,r,b) {
@@ -57,7 +63,7 @@ exports.app = function(opts) {
           var opts = {
             url: uri + 'user/stream',
             method: 'GET',
-            qs: { access_token:access_token },
+            qs: qs,
             json: true
           };
           request(opts,function(e,r,b) {
@@ -83,7 +89,7 @@ exports.app = function(opts) {
           var opts = {
             url: uri + 'user/pusherchannel',
             method: 'GET',
-            qs: { access_token:access_token },
+            qs: qs,
             json: true
           };
           request(opts,function(e,r,b) {
@@ -116,7 +122,7 @@ exports.app = function(opts) {
           var opts = {
             url: uri + 'device/'+device,
             method: 'PUT',
-            qs: { access_token:access_token },
+            qs: qs,
             json: { DA:command }
           };
           request(opts,function(e,r,b) {
@@ -150,7 +156,7 @@ exports.app = function(opts) {
           var opts = {
             url: uri + 'device/'+device+'/callback',
             method: 'POST',
-            qs: { access_token:access_token },
+            qs: qs,
             json: { url:url }
           };
           request(opts,function(e,r,b) {
@@ -162,7 +168,7 @@ exports.app = function(opts) {
                 var opts = {
                   url: uri + 'device/'+device+'/callback',
                   method: 'PUT',
-                  qs: { access_token:access_token },
+                  qs: qs,
                   json: { url:url }
                 };
                 request(opts,function(e,r,b) {
@@ -193,7 +199,7 @@ exports.app = function(opts) {
           var opts = {
             url: uri + 'device/'+device+'/callback',
             method: 'DELETE',
-            qs: { access_token:access_token }
+            qs: qs
           };
           request(opts,function(e,r,b) {
             if (e) cb(e)
@@ -220,7 +226,6 @@ exports.app = function(opts) {
          * @api public
          */
         data: function(start, end, cb) {
-          var qs = {access_token:access_token};
 
           if (typeof start === "function") {
             cb = start;
@@ -264,7 +269,7 @@ exports.app = function(opts) {
           var opts = {
             url: uri + 'device/'+device+'/heartbeat',
             method: 'GET',
-            qs: { access_token:access_token },
+            qs: qs,
             json: true
           };
           request(opts,function(e,r,b) {
@@ -292,7 +297,7 @@ exports.app = function(opts) {
       var opts = {
         url: uri + 'devices',
         method: 'GET',
-        qs: { access_token:access_token },
+        qs: qs,
         json: true
       };
       request(opts,function(e,r,b) {
