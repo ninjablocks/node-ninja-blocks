@@ -7,11 +7,22 @@ A simple library to help interacting with the Ninja Blocks Platform.
 npm install ninja-blocks
 ```
 
-## Usage
+## OAuth 2 Usage
 ```javascript
 var ninjaBlocks = require('ninja-blocks');
 // ACCESS_TOKEN acquired via OAuth
 var ninja = ninjaBlocks.app({access_token:ACCESS_TOKEN});
+
+ninja.devices(function(err,devices) {
+  // ...
+});
+```
+
+## User Access Token Usage
+```javascript
+var ninjaBlocks = require('ninja-blocks');
+// ACCESS_TOKEN acquired via OAuth
+var ninja = ninjaBlocks.app({user_access_token:USER_ACCESS_TOKEN});
 
 ninja.devices(function(err,devices) {
   // ...
