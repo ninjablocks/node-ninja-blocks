@@ -21,7 +21,7 @@ ninja.devices(function(err,devices) {
 ## User Access Token Usage
 ```javascript
 var ninjaBlocks = require('ninja-blocks');
-// ACCESS_TOKEN acquired via OAuth
+// USER_ACCESS_TOKEN acquired via settings page in Ninja Cloud
 var ninja = ninjaBlocks.app({user_access_token:USER_ACCESS_TOKEN});
 
 ninja.devices(function(err,devices) {
