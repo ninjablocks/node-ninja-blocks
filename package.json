@@ -1,6 +1,6 @@
 {
   "name": "ninja-blocks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Library for interfacing with Ninja Blocks platform.",
   "main": "index.js",
   "scripts": {
