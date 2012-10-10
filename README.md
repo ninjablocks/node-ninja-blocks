@@ -75,4 +75,10 @@ ninja.device(guid).data(start, end, function(err, data) { ... })
 // Fetch the last heartbeat received by this device.
 ninja.device(guid).last_heartbeat(function(err, data) { ... })
 ```
+
+### Helpers
+```javascript
+// Returns found subdevices within a set of devices
+ninja.utils.findSubDevice({ shortName: 'Lamp On' }, deviceSet);
+```
 This is by no means exhaustive, and more functionality will be forthcoming.
