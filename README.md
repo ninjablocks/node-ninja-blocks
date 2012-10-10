@@ -49,7 +49,10 @@ app.user().pusher_channel(function(err,data){ ... })
  * Fetch all the user's device details.
  * Optionally if an object is passed as the first argument,
  * it will filter by the parameters. If a string is provided, 
- * it will assume it's the device type intended for filtering.     
+ * it will assume it's the device type intended for filtering. 
+ *
+ * NOTE: The returned data is in the form guid => meta data
+ * You will need the guid for all the other device commands.    
  */
 app.devices(function(err, data) { ... });
 app.devices({ device_type:'rgb_led' },function(err,data){ ... })
