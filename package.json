@@ -1,6 +1,6 @@
 {
   "name": "ninja-blocks",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Library for interfacing with Ninja Blocks platform.",
   "main": "index.js",
   "scripts": {
@@ -9,13 +9,12 @@
   "dependencies": {
     "request": "2.11.1"
   },
-  "devDependenvies": {
+  "devDependencies": {
     "should": "*",
     "mocha": "*"
   },
   "author": "Daniel Friedman",
   "license": "MIT",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git@github.com:ninjablocks/node-ninja-blocks.git"

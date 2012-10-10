@@ -1,5 +1,6 @@
-var request       = require('request');
-var uri           = 'https://api.ninja.is/rest/v0/';
+var request = require('request'),
+    utils   = require(__dirname+'/lib/utils'),
+    uri     = 'https://api.ninja.is/rest/v0/';
 
 /**
  * Ninja Blocks Node Library
@@ -280,27 +281,31 @@ exports.app = function(opts) {
             }
           });
         }
-
       }
-
     },
     /**
      * Fetched all the user's device details.
-     * Optionally specify a device type to return
+     * Optionally if a string is provided, specify 
+     * a device type to return. If an object is passed
+     * filter by the parameters.
      *
      * Example:
      *     app.devices('rgbled',function(err, data) { ... })
+     *     app.devices({shortName:'My LED'},function(err,data){ ... })
      *
-     * @param {String} type
+     * @param {String/Object} filter
      * @param {Function} cb
      * @api public
      */
-    devices: function(type,cb) {
-      
-      if (typeof type == "function") {
-        cb = type;
-      };
-
+    devices: function(filter,cb) {
+      if (!filter) {
+        filter = {};
+      } else if (typeof filter == "function") {
+        cb = filter;
+        filter = {};
+      } else if (typeof filter == "string") {
+        filter = {device_type:filter}; // Backwards compatibility
+      }
       var opts = {
         url: uri + 'devices',
         method: 'GET',
@@ -309,23 +314,8 @@ exports.app = function(opts) {
       };
       request(opts,function(e,r,b) {
         if (e) cb(e)
-          else {
-            if (b.result===1) {
-              if (typeof type == "string") {
-                var out = {};
-                for (var guid in b.data) {
-                  if (b.data.hasOwnProperty(guid) && b.data[guid].device_type===type) {
-                    out[guid] = b.data[guid];
-                  }
-                }
-                b.data = out;
-              }
-              cb(null, b.data)
-            }
-            else {
-              cb({statusCode:b.id||200,error:b.error})
-            }
-          }
+        else if (b.result===1) cb(null, utils.filter(filter,b.data))
+        else cb({statusCode:b.id||200,error:b.error})
       });
     }
   }
