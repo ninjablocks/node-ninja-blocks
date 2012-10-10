@@ -127,11 +127,10 @@ exports.app = function(opts) {
             json: { DA:command }
           };
           request(opts,function(e,r,b) {
+            if (!cb) return;
             if (e) cb(e)
-            else {
-              if (b.result===1) cb(null)
-              else cb({statusCode:b.id||200,error:b.error})
-            }
+            else if (b.result===1) cb(null)
+            else cb({statusCode:b.id||200,error:b.error})
           });
         },
 
@@ -161,28 +160,26 @@ exports.app = function(opts) {
             json: { url:url }
           };
           request(opts,function(e,r,b) {
+            if (!cb && !overwrite && b && b.id !== 409 ) return;
             if (e) cb(e)
+            else if (b.result===1) cb(null)
+            else if (b.id===409 && overwrite) {
+              // A url already exists, let's update it
+              var opts = {
+                url: uri + 'device/'+device+'/callback',
+                method: 'PUT',
+                qs: qs,
+                json: { url:url }
+              };
+              request(opts,function(e,r,b) {
+                if (!cb) return;
+                if (e) cb(e)
+                else if (b.result===1) cb(null)
+                else cb({statusCode:b.id||200,error:b.error})
+              });
+            }
             else {
-              if (b.result===1) cb(null)
-              else if (b.id===409 && overwrite) {
-                // A url already exists, let's update it
-                var opts = {
-                  url: uri + 'device/'+device+'/callback',
-                  method: 'PUT',
-                  qs: qs,
-                  json: { url:url }
-                };
-                request(opts,function(e,r,b) {
-                  if (e) cb(e)
-                  else {
-                    if (b.result===1) cb(null)
-                    else cb({statusCode:b.id||200,error:b.error})
-                  }
-                });
-              }
-              else {
-                cb({statusCode:b.id||200,error:b.error})
-              }
+              cb({statusCode:b.id||200,error:b.error})
             }
           });
         },
@@ -203,12 +200,11 @@ exports.app = function(opts) {
             qs: qs
           };
           request(opts,function(e,r,b) {
+            if (!cb) return;
             if (e) cb(e)
+            else if (b.result===1) cb(null)
             else {
-              if (b.result===1) cb(null)
-              else {
-                cb({statusCode:b.id||200,error:b.error})
-              }
+              cb({statusCode:b.id||200,error:b.error})
             }
           });
         },
@@ -250,10 +246,8 @@ exports.app = function(opts) {
 
           request(opts,function(e,r,b) {
             if (e) cb(e)
-            else {
-              if (b.result===1) cb(null, b.data)
-              else cb({statusCode:b.id||200,error:b.error})
-            }
+            else if (b.result===1) cb(null, b.data)
+            else cb({statusCode:b.id||200,error:b.error})
           });
         },
 
@@ -275,23 +269,22 @@ exports.app = function(opts) {
           };
           request(opts,function(e,r,b) {
             if (e) cb(e)
-            else {
-              if (b.result===1) cb(null, b.data)
-              else cb({statusCode:b.id||200,error:b.error})
-            }
+            else if (b.result===1) cb(null, b.data)
+            else cb({statusCode:b.id||200,error:b.error})
           });
         }
       }
     },
     /**
-     * Fetched all the user's device details.
-     * Optionally if a string is provided, specify 
-     * a device type to return. If an object is passed
-     * filter by the parameters.
+     * Fetches all the user's device details.
+     * Optionally if an object is passed as the first argument,
+     * it will filter by the parameters. If a string is provided, 
+     * it will assume it's the device type intended for filtering. 
      *
      * Example:
      *     app.devices('rgbled',function(err, data) { ... })
-     *     app.devices({shortName:'My LED'},function(err,data){ ... })
+     *     app.devices({shortName:'On Board RGB LED'},function(err,data){ ... })
+     *     app.devices({vid:0, shortName:'On Board RGB LED'},function(err,data){ ... })
      *
      * @param {String/Object} filter
      * @param {Function} cb
