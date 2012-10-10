@@ -45,9 +45,15 @@ app.user().pusher_channel(function(err,data){ ... })
 
 ### Device
 ```javascript
-// Fetch a user's devices, a hash map of guid => metadata
+/**
+ * Fetch all the user's device details.
+ * Optionally if an object is passed as the first argument,
+ * it will filter by the parameters. If a string is provided, 
+ * it will assume it's the device type intended for filtering.     
+ */
 app.devices(function(err, data) { ... });
-app.devices('rgbled',function(err,data) { ... });
+app.devices({ device_type:'rgb_led' },function(err,data){ ... })
+app.devices({ vid:0, shortName:'On Board RGB LED' },function(err,data){ ... })
 
 // Send `command` to device `guid`
 app.device(guid).actuate(command,function(err) { ... }) 
