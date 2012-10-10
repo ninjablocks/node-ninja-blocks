@@ -310,6 +310,7 @@ exports.app = function(opts) {
         else if (b.result===1) cb(null, utils.filter(filter,b.data))
         else cb({statusCode:b.id||200,error:b.error})
       });
-    }
+    },
+    utils:utils
   }
 }
