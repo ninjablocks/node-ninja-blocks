@@ -82,3 +82,30 @@ ninja.device(guid).last_heartbeat(function(err, data) { ... })
 ninja.utils.findSubDevice({ shortName: 'Lamp On' }, deviceSet);
 ```
 This is by no means exhaustive, and more functionality will be forthcoming.
+
+
+## Example
+```javascript
+
+var _ = require('underscore');
+var ninjaBlocks = require('ninja-blocks');
+// Use the API Access Token from https://a.ninja.is/hacking
+var ninja = ninjaBlocks.app({user_access_token:USER_ACCESS_TOKEN});
+
+
+// Get the most recent termperature reading from all temperature sensors
+ninja.devices({ device_type: 'temperature' }, function(err, devices) {
+    _.each(devices, function(device,guid){
+        ninja.device(guid).last_heartbeat(function(err, data) { 
+            console.log(device.shortName+' is '+data.DA+'C');
+        })
+    })
+});
+
+// Execute an RF command by name - turn a "Lamp Off" 
+ninja.devices({ device_type: 'rf433' }, function(err, devices) {
+    var lamps = ninja.utils.findSubDevice({ shortName: 'Lamp Off' }, devices);
+    _.each(lamps, function(lamp){
+        ninja.device(lamp.guid).actuate(lamp.data) 
+    })
+});
