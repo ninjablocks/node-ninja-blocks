@@ -197,6 +197,7 @@ exports.app = function(opts) {
           var opts = {
             url: uri + 'device/'+device+'/callback',
             method: 'DELETE',
+            json: true,
             qs: qs
           };
           request(opts,function(e,r,b) {
