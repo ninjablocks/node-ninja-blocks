@@ -46,7 +46,7 @@ exports.app = function(opts) {
               cb({statusCode:r.statusCode,error:b.error})
             }
           }
-        });        
+        });
         return;
       }
 
@@ -75,7 +75,7 @@ exports.app = function(opts) {
                 cb({statusCode:r.statusCode,error:b.error})
               }
             }
-          });  
+          });
         },
         /**
          * Fetches the user's pucher channel
@@ -101,7 +101,7 @@ exports.app = function(opts) {
                 cb({statusCode:b.id||200,error:b.error})
               }
             }
-          });  
+          });
         },
       }
     },
@@ -109,6 +109,29 @@ exports.app = function(opts) {
     device: function(device) {
 
       return {
+        /**
+         * Fetch data about one device
+         *
+         * Example:
+         *     app.device(a_led_guid).fetch(function(err) { ... })
+         *
+         * @param {Function} cb
+         * @api public
+         */
+        fetch: function(cb) {
+          var opts = {
+            url: uri + 'device/'+device,
+            method: 'GET',
+            qs: qs,
+            json: true
+          };
+          request(opts,function(e,r,b) {
+            if (!cb) return;
+            if (e) cb(e)
+            else if (b.result===1) cb(null,b.data)
+            else cb({statusCode:b.id||200,error:b.error})
+          });
+        },
         /**
          * Actuates a device, sending a given `command`.
          *
@@ -136,7 +159,7 @@ exports.app = function(opts) {
 
         /**
          * Subscribes to a device's data feed.
-         * 
+         *
          * Optionally `overwrite`s an existing callback `url`
          * Default is false.
          *
@@ -186,7 +209,7 @@ exports.app = function(opts) {
 
         /**
          * Unubscribes to a device's data feed.
-         * 
+         *
          * Example:
          *     app.device(guid).unsubscribe(function(err) { ... })
          *
@@ -279,8 +302,8 @@ exports.app = function(opts) {
     /**
      * Fetches all the user's device details.
      * Optionally if an object is passed as the first argument,
-     * it will filter by the parameters. If a string is provided, 
-     * it will assume it's the device type intended for filtering. 
+     * it will filter by the parameters. If a string is provided,
+     * it will assume it's the device type intended for filtering.
      *
      * Example:
      *     app.devices('rgbled',function(err, data) { ... })
