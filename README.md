@@ -58,6 +58,9 @@ ninja.devices(function(err, data) { ... });
 ninja.devices({ device_type:'rgb_led' },function(err,data){ ... })
 ninja.devices({ vid:0, shortName:'On Board RGB LED' },function(err,data){ ... })
 
+// Fetch one device's details
+ninja.device(guid).fetch(function(err,data) { ... });
+
 // Send `command` to device `guid`
 ninja.device(guid).actuate(command,function(err) { ... }) 
 
