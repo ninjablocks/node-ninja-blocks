@@ -1,6 +1,7 @@
 Node Ninja Blocks
 ===
 A simple library to help interacting with the Ninja Blocks Platform.
+[![Build Status](https://travis-ci.org/ninjablocks/node-ninja-blocks.png)](https://travis-ci.org/ninjablocks/node-ninja-blocks)
 
 ## Installation
 ```
